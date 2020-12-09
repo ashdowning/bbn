@@ -1,0 +1,341 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Language {
+  code: String!
+  name: String!
+  native: String!
+}
+
+type Location {
+  geoname_id: Float!
+  capital: String!
+  languages: [Language!]!
+  country_flag: String!
+  country_flag_emoji: String!
+  country_flag_emoji_unicode: String!
+  calling_code: String!
+  is_eu: Boolean!
+}
+
+type Browser {
+  name: String!
+  version: String!
+  major: String!
+}
+
+type OS {
+  name: String!
+  version: String!
+}
+
+type IPModel {
+  ip: String!
+  type: String!
+  continent_code: String!
+  continent_name: String!
+  country_code: String!
+  country_name: String!
+  region_code: String!
+  city: String!
+  zip: String!
+  latitude: Float!
+  longitude: Float!
+  location: Location!
+  browser: Browser!
+  os: OS!
+  loginTime: String!
+}
+
+type UserModel {
+  _id: ID!
+  authorization: String!
+  username: String!
+  email: String!
+  password: String!
+  role: Float!
+  name: String!
+  location: String!
+  organization: String!
+  website: String!
+  bio: String!
+  avatarUrl: String!
+  phoneNumber: String!
+  isTOTP: Boolean!
+  totpSecret: String!
+  recoveryCodes: [String!]!
+  loginStatistics: [IPModel!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type TOTPModel {
+  qrcode: String!
+  key: String!
+}
+
+type RecoveryCodeModel {
+  recoveryCodes: [String!]!
+}
+
+type AnnouncementModel {
+  _id: String!
+  content: String!
+  weight: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type BatchDeleteModel {
+  ok: Float
+  n: Float
+  deletedCount: Float
+  ids: [ID!]!
+}
+
+type SendSMSRes {
+  success: Boolean!
+}
+
+type ServiceInfoModel {
+  vm_type: String!
+  ve_status: String!
+  ve_mac1: String!
+  ve_used_disk_space_b: String!
+  is_cpu_throttled: String!
+  ssh_port: Float!
+  live_hostname: String!
+  load_average: String!
+  mem_available_kb: Float!
+  swap_total_kb: Float!
+  swap_available_kb: Float!
+  hostname: String!
+  node_ip: String!
+  node_alias: String!
+  node_location: String!
+  node_location_id: String!
+  node_datacenter: String!
+  location_ipv6_ready: Boolean!
+  plan: String!
+  plan_monthly_data: Float!
+  monthly_data_multiplier: Float!
+  plan_disk: Float!
+  plan_ram: Float!
+  plan_swap: Float!
+  plan_max_ipv6s: Float!
+  os: String!
+  email: String!
+  data_counter: Float!
+  data_next_reset: Float!
+  ip_addresses: [String!]!
+  private_ip_addresses: [String!]!
+  ip_nullroutes: [String!]!
+  iso1: String
+  iso2: String
+  available_isos: [String!]!
+  plan_private_network_available: Boolean!
+  location_private_network_available: Boolean!
+  rdns_api_available: Boolean!
+  ptr: String!
+  suspended: Boolean!
+  policy_violation: Boolean!
+  suspension_count: Float
+  max_abuse_points: Float!
+  error: Float!
+  veid: Float!
+}
+
+type UsageStatesModel {
+  timestamp: String!
+  network_in_bytes: String!
+  network_out_bytes: String!
+  disk_read_bytes: String!
+  disk_write_bytes: String!
+  cpu_usage: String!
+}
+
+type AgendaModel {
+  _id: String!
+  title: String!
+  startDate: DateTime!
+  endDate: DateTime
+  allDay: Boolean!
+  notes: String
+  rRule: String
+  exDate: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type MottoModel {
+  _id: String!
+  content: String!
+  weight: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type PostStatisticsModel {
+  _id: String!
+  postId: String!
+  postName: String!
+  scenes: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type PostStatisticsGroupItemModel {
+  postId: String!
+  postName: String!
+  scenes: String!
+  operatedAt: DateTime!
+}
+
+type PostStatisticsGroupModel {
+  _id: String!
+  count: Float!
+  items: [PostStatisticsGroupItemModel!]!
+}
+
+type Query {
+  login(input: LoginInput!): UserModel!
+  getAnnouncements: [AnnouncementModel!]!
+  getAnnouncementById(id: ID!): AnnouncementModel!
+  getBanwagonServiceInfo: ServiceInfoModel!
+  getBanwagonUsageStats: [UsageStatesModel!]!
+  getAgenda: [AgendaModel!]!
+  getMottos: [MottoModel!]!
+  getMottoById(id: ID!): MottoModel!
+  getPostStatistics: [PostStatisticsGroupModel!]!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+  token: String!
+}
+
+type Mutation {
+  register(input: RegisterInput!): UserModel!
+  createTOTP: TOTPModel!
+  validateTOTP(input: ValidateTOTPInput!): UserModel!
+  createRecoveryCodes: RecoveryCodeModel!
+  validateRecoveryCode(input: ValidateTOTPInput!): UserModel!
+  changePassword(input: ChangePasswordInput!): UserModel!
+  loginStatistics: IPModel!
+  updateUser(input: UpdateUserInput!): UserModel!
+  updateUserName(username: String!): UserModel!
+  updateEmail(email: String!): UserModel!
+  deleteAccount: UserModel!
+  createAnnouncement(input: CreateAnnouncementInput!): AnnouncementModel!
+  updateAnnouncementById(input: UpdateAnnouncementInput!): AnnouncementModel!
+  exchangePositionAnnouncement(input: ExchangePositionInput!): [AnnouncementModel!]!
+  deleteAnnouncementById(id: ID!): AnnouncementModel!
+  deleteAnnouncements(ids: [ID!]!): BatchDeleteModel!
+  sendSMS(phoneNumber: String!): SendSMSRes!
+  validateSMS(input: ValidateSMSInput!): UserModel!
+  createAgenda(input: CreateAgendaInput!): AgendaModel!
+  updateAgendaById(input: UpdateAgendaInput!): AgendaModel!
+  deleteAgendaById(id: ID!): AgendaModel!
+  createMotto(input: CreateMottoInput!): MottoModel!
+  updateMottoById(input: UpdateMottoInput!): MottoModel!
+  exchangePositionMotto(input: ExchangePositionInput!): [MottoModel!]!
+  deleteMottoById(id: ID!): MottoModel!
+  deleteMottos(ids: [ID!]!): BatchDeleteModel!
+  createPostStatistics(input: CreatePostStatisticsInput!): PostStatisticsModel!
+}
+
+input RegisterInput {
+  email: String!
+  username: String!
+  password: String!
+}
+
+input ValidateTOTPInput {
+  code: String!
+  key: String!
+}
+
+input ChangePasswordInput {
+  oldPassword: String!
+  newPassword: String!
+}
+
+input UpdateUserInput {
+  id: String
+  isTOTP: Boolean
+  totpSecret: String
+  recoveryCodes: [String!]
+  password: String
+  phoneNumber: String
+  loginStatistics: [String!]
+  name: String
+  location: String
+  organization: String
+  website: String
+  bio: String
+  avatarUrl: String
+}
+
+input CreateAnnouncementInput {
+  content: String!
+}
+
+input UpdateAnnouncementInput {
+  id: String!
+  content: String!
+}
+
+input ExchangePositionInput {
+  id: String!
+  exchangedId: String!
+  weight: Float!
+  exchangedWeight: Float!
+}
+
+input ValidateSMSInput {
+  phoneNumber: String!
+  smsCode: String!
+}
+
+input CreateAgendaInput {
+  title: String!
+  startDate: String!
+  allDay: Boolean!
+  notes: String
+  endDate: String
+  rRule: String
+  exDate: String
+}
+
+input UpdateAgendaInput {
+  id: String!
+  title: String
+  startDate: String
+  endDate: String
+  allDay: Boolean
+  notes: String
+  rRule: String
+  exDate: String
+}
+
+input CreateMottoInput {
+  content: String!
+}
+
+input UpdateMottoInput {
+  id: String!
+  content: String!
+}
+
+input CreatePostStatisticsInput {
+  postId: String!
+  postName: String!
+  scenes: String!
+}
